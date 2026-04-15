@@ -1,0 +1,12 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <title>FixDoc — AI-Powered Document Integrity</title>
+  <!-- Document body -->
+  <path d="M16 8C16 5.79 17.79 4 20 4H36L48 16V52C48 54.21 46.21 56 44 56H20C17.79 56 16 54.21 16 52V8Z" fill="#0d9488"/>
+  <!-- Fold line -->
+  <path d="M36 4L36 12C36 14.21 37.79 16 40 16H48" fill="none" stroke="#061a18" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Checkmark -->
+  <path d="M26 32L30 36L38 28" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Document lines -->
+  <path d="M24 44H40" stroke="rgba(255,255,255,0.3)" stroke-width="2" stroke-linecap="round"/>
+  <path d="M24 48H34" stroke="rgba(255,255,255,0.3)" stroke-width="2" stroke-linecap="round"/>
+</svg>
