@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="820" viewBox="0 0 1200 820" font-family="Inter, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" role="img" aria-labelledby="t d">
+  <title id="t">FixDoc architecture</title>
+  <desc id="d">Browsers, lender systems and Vercel Cron reach the FixDoc Next.js application on Vercel. Middleware gates every request; API routes enforce role, tenant and plan checks and call the domain services. Supabase provides PostgreSQL with row level security and the audit log, Auth with two-step verification, private Storage and Realtime. OpenAI, Stripe, Resend and customer webhook endpoints are the external services.</desc>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#475569"/>
+    </marker>
+    <style>
+      .h{font-size:15px;font-weight:700;fill:#0f172a}
+      .s{font-size:12.5px;fill:#334155}
+      .m{font-size:11.5px;fill:#64748b}
+      .w{font-size:13px;font-weight:700;fill:#ffffff}
+      .band{font-size:12px;font-weight:700;letter-spacing:.08em;fill:#0f766e}
+      .ln{stroke:#475569;stroke-width:1.6;fill:none}
+    </style>
+  </defs>
+
+  <rect width="1200" height="820" rx="18" fill="#ffffff"/>
+  <rect x="1" y="1" width="1198" height="818" rx="18" fill="none" stroke="#e2e8f0" stroke-width="2"/>
+
+  <!-- Title -->
+  <text x="40" y="48" font-size="22" font-weight="800" fill="#0f172a">FixDoc architecture</text>
+  <text x="40" y="72" class="m">Multi-tenant SaaS for loan file document checks. Every request is scoped to one organization.</text>
+  <rect x="1044" y="30" width="116" height="30" rx="15" fill="#0d9488"/>
+  <text x="1102" y="50" text-anchor="middle" class="w">v0.13.0</text>
+
+  <!-- Band 1: who calls -->
+  <text x="40" y="112" class="band">CALLERS</text>
+  <g>
+    <rect x="40" y="124" width="340" height="72" rx="12" fill="#f8fafc" stroke="#cbd5e1"/>
+    <text x="60" y="152" class="h">Brokers, officers and reviewers</text>
+    <text x="60" y="174" class="s">Browser, session JWT (aal2 with two-step)</text>
+  </g>
+  <g>
+    <rect x="430" y="124" width="340" height="72" rx="12" fill="#f8fafc" stroke="#cbd5e1"/>
+    <text x="450" y="152" class="h">Lender and LOS systems</text>
+    <text x="450" y="174" class="s">Scoped, hashed API keys (Business)</text>
+  </g>
+  <g>
+    <rect x="820" y="124" width="340" height="72" rx="12" fill="#f8fafc" stroke="#cbd5e1"/>
+    <text x="840" y="152" class="h">Vercel Cron</text>
+    <text x="840" y="174" class="s">Digests, webhook retry, auto-archive</text>
+  </g>
+
+  <path class="ln" d="M210 196V240" marker-end="url(#a)"/>
+  <path class="ln" d="M600 196V240" marker-end="url(#a)"/>
+  <path class="ln" d="M990 196V240" marker-end="url(#a)"/>
+
+  <!-- Band 2: the app -->
+  <rect x="24" y="244" width="1152" height="276" rx="16" fill="#f0fdfa" stroke="#5eead4" stroke-width="1.5"/>
+  <text x="44" y="272" class="band">NEXT.JS 16 APPLICATION ON VERCEL</text>
+  <text x="1156" y="272" text-anchor="end" class="m">TypeScript, React 19, TailAdmin Pro UI, Zod validation</text>
+
+  <rect x="44" y="288" width="1112" height="44" rx="10" fill="#0d9488"/>
+  <text x="64" y="315" class="w">Middleware</text>
+  <text x="170" y="315" font-size="12.5" fill="#ccfbf1">Maintenance gate for pages and API, session refresh, super admin bypass</text>
+
+  <g>
+    <rect x="44" y="346" width="262" height="156" rx="12" fill="#ffffff" stroke="#99f6e4"/>
+    <text x="62" y="372" class="h">Pages (App Router)</text>
+    <text x="62" y="396" class="s">Dashboard, projects, findings,</text>
+    <text x="62" y="414" class="s">reviews, portfolio, developers,</text>
+    <text x="62" y="432" class="s">settings, admin</text>
+    <text x="62" y="460" class="m">Locked previews lead to</text>
+    <text x="62" y="476" class="m">Compare plans</text>
+  </g>
+  <g>
+    <rect x="320" y="346" width="300" height="156" rx="12" fill="#ffffff" stroke="#99f6e4"/>
+    <text x="338" y="372" class="h">API routes /api/v1 (143)</text>
+    <text x="338" y="396" class="s">withOrgMember, withOrgAdmin:</text>
+    <text x="338" y="414" class="s">9 roles, organization_id on every query</text>
+    <text x="338" y="432" class="s">Entitlements and metering per plan</text>
+    <text x="338" y="450" class="s">Rate limits, MFA_REQUIRED for aal1</text>
+    <text x="338" y="476" class="m">Public API /api/v1/public, JSON errors only</text>
+  </g>
+  <g>
+    <rect x="634" y="346" width="522" height="156" rx="12" fill="#ffffff" stroke="#99f6e4"/>
+    <text x="652" y="372" class="h">Domain services</text>
+    <text x="652" y="396" class="s">Fraud engine: income, deposit, identity, employer and date checks</text>
+    <text x="652" y="414" class="s">Findings and decisions, review queue, team oversight</text>
+    <text x="652" y="432" class="s">Evidence Pack and quality report PDFs (SHA-256 recorded)</text>
+    <text x="652" y="450" class="s">AI assistant with per-user history, portfolio patterns</text>
+    <text x="652" y="476" class="m">Signed webhooks with retries and SSRF guard, email dispatch, archive job</text>
+  </g>
+
+  <path class="ln" d="M470 520V566" marker-end="url(#a)"/>
+  <path class="ln" d="M895 520V566" marker-end="url(#a)"/>
+
+  <!-- Band 3: data and external -->
+  <rect x="24" y="570" width="620" height="220" rx="16" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+  <text x="44" y="598" class="band" style="fill:#1d4ed8">SUPABASE</text>
+  <g>
+    <rect x="44" y="612" width="286" height="76" rx="12" fill="#ffffff" stroke="#bfdbfe"/>
+    <text x="62" y="638" class="h">PostgreSQL</text>
+    <text x="62" y="660" class="s">Row level security by organization</text>
+    <text x="62" y="678" class="m">44 migrations, full audit trail</text>
+  </g>
+  <g>
+    <rect x="344" y="612" width="280" height="76" rx="12" fill="#ffffff" stroke="#bfdbfe"/>
+    <text x="362" y="638" class="h">Auth</text>
+    <text x="362" y="660" class="s">JWT sessions, OAuth, TOTP two-step</text>
+    <text x="362" y="678" class="m">Fresh code to remove a factor</text>
+  </g>
+  <g>
+    <rect x="44" y="700" width="286" height="76" rx="12" fill="#ffffff" stroke="#bfdbfe"/>
+    <text x="62" y="726" class="h">Storage</text>
+    <text x="62" y="748" class="s">Private buckets, org-scoped paths</text>
+    <text x="62" y="766" class="m">5-minute signed download links</text>
+  </g>
+  <g>
+    <rect x="344" y="700" width="280" height="76" rx="12" fill="#ffffff" stroke="#bfdbfe"/>
+    <text x="362" y="726" class="h">Realtime</text>
+    <text x="362" y="748" class="s">In-app notifications</text>
+    <text x="362" y="766" class="m">Live updates without reload</text>
+  </g>
+
+  <rect x="664" y="570" width="512" height="220" rx="16" fill="#fff7ed" stroke="#fdba74" stroke-width="1.5"/>
+  <text x="684" y="598" class="band" style="fill:#c2410c">EXTERNAL SERVICES</text>
+  <g>
+    <rect x="684" y="612" width="236" height="76" rx="12" fill="#ffffff" stroke="#fed7aa"/>
+    <text x="702" y="638" class="h">OpenAI</text>
+    <text x="702" y="660" class="s">GPT-4o parsing and checks</text>
+    <text x="702" y="678" class="m">Assistant answers on each loan file</text>
+  </g>
+  <g>
+    <rect x="932" y="612" width="224" height="76" rx="12" fill="#ffffff" stroke="#fed7aa"/>
+    <text x="950" y="638" class="h">Stripe</text>
+    <text x="950" y="660" class="s">Checkout, portal, invoices</text>
+    <text x="950" y="678" class="m">Signed webhooks</text>
+  </g>
+  <g>
+    <rect x="684" y="700" width="236" height="76" rx="12" fill="#ffffff" stroke="#fed7aa"/>
+    <text x="702" y="726" class="h">Resend</text>
+    <text x="702" y="748" class="s">Transactional email, digests</text>
+    <text x="702" y="766" class="m">Signed unsubscribe links</text>
+  </g>
+  <g>
+    <rect x="932" y="700" width="224" height="76" rx="12" fill="#ffffff" stroke="#fed7aa"/>
+    <text x="950" y="726" class="h">Customer endpoints</text>
+    <text x="950" y="748" class="s">Standard Webhooks events</text>
+    <text x="950" y="766" class="m">https only, private hosts refused</text>
+  </g>
+
+  <text x="600" y="808" text-anchor="middle" class="m">Service-role queries run only on the server and always filter organization_id in code, in addition to RLS.</text>
+</svg>
